@@ -1,3 +1,5 @@
 #!/usr/bin/env zsh
 
-echo "iniittt"
+# _yavm_debug "Initialising yavm."
+
+yavm_set_path --force

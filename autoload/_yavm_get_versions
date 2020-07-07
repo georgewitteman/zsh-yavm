@@ -1,9 +1,12 @@
 #!/usr/bin/env zsh
 
 typeset -gA _yavm_versions=()
+typeset -gA _yavm_command_files=()
 
-[[ -n "$YAVM_GO_DISABLED" ]] && _yavm_versions[go]="__disabled__"
-[[ -n "$YAVM_PYTHON_DISABLED" ]] && _yavm_versions[python]="__disabled__"
+[[ -z "$YAVM_GO_ENABLED" ]] && _yavm_versions[go]="__disabled__"
+[[ -z "$YAVM_PYTHON_ENABLED" ]] && _yavm_versions[python]="__disabled__"
+
+# _yavm_debug "Searching for versions starting from '${(D)PWD}'."
 
 # First priority is environment variables. Something set as an environment
 # variable is higher priority than a file.
@@ -17,16 +20,15 @@ fi
 # it. If it is, a version was set with a higher priority, so don't overwrite
 # it.
 local file_directory="$PWD"
-while [[ "$file_directory" != "/" ]]; do
+while true; do
   if [[ -z "${_yavm_versions[python]}" && -f "$file_directory/.python-version" ]]; then
     _yavm_versions[python]="${(j: :)${(f)$(<$file_directory/.python-version)}}"
   fi
 
   if [[ -f "$file_directory/.tool-versions" ]]; then
-    local file_contents=("${(f)$(<$file_directory/.tool-versions)}")
-    for line in $file_contents; do
+    for line in ${(f)$(<$file_directory/.tool-versions)}; do
       local split_line=("${(s: :)line}")
-      local versions="${(j: :)split_line[2,-1]}"
+      local versions="${split_line[2,-1]}"
       if [[ -z "${_yavm_versions[python]}" && "${split_line[1]}" = "python" ]]; then
         _yavm_versions[python]="$versions"
       elif [[ -z "${_yavm_versions[go]}" && "${split_line[1]}" = "golang" ]]; then
@@ -35,14 +37,8 @@ while [[ "$file_directory" != "/" ]]; do
     done
   fi
 
-  # Checking the filesystem is expensive, so let's short circuit if we've found
-  # versions for everything we care about.
-  if \
-    [[ -n "$_yavm_versions[python]" ]] && \
-    [[ -n "$_yavm_versions[go]" ]]
-    then
-      _yavm_debug "Found all versions at: $file_directory"
-      break
+  if [[ "$file_directory" = "/" ]]; then
+    break
   fi
 
   file_directory="${file_directory:a:h}"

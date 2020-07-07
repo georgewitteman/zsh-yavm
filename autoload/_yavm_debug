@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
 if [[ -n "$YAVM_DEBUG" ]]; then
-  echo -n "[DEBUG] "
+  echo -n "[YAVM DEBUG] "
   echo "$@"
 fi

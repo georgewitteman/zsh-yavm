@@ -1,0 +1,24 @@
+#!/usr/bin/env zsh
+
+local cmd="$1"
+
+if [[ "$cmd" = "yavm-init" ]]; then
+  yavm_init
+  return "$status"
+fi
+
+if [[ -z "$cmd" ]]; then
+  yavm_help
+  return "$status"
+fi
+
+shift
+
+local sub_script="yavm_${cmd/\-/_}"
+
+if (( ! $+functions[$sub_script] )); then
+  _yavm_invalid_command "$cmd"
+  return "$status"
+fi
+
+"$sub_script" "$@"

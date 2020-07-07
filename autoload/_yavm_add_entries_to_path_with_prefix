@@ -18,8 +18,8 @@ fi
 # even if we remove all the existing entries.
 path=("${path[@]:|entries_to_remove}")
 
-_yavm_debug "entries to remove: $entries_to_remove"
-_yavm_debug "entries to add: $entries_to_add"
+# _yavm_debug "Entries to remove: $entries_to_remove"
+# _yavm_debug "Entries to add: $entries_to_add"
 
 # Add new entries at the same position
 local entry
