@@ -1,0 +1,4 @@
+#!/usr/bin/env zsh
+
+_yavm_add_entries_to_path_with_prefix "$2" "$4" \
+  ${2}${^${(s: :)_yavm_versions[$1]}}${^${(s: :)3}}

@@ -1,28 +1,23 @@
 #!/usr/bin/env zsh
 
-local prefix="$1"
-shift
+local prefix="$1" force="$2" path_tmp index_to_add_at
+shift 2
 
-local entries=("$@")
-local current_versions_in_path=(${(M)path:#$prefix/*})
-local entries_to_add=("${@:|current_versions_in_path}")
-local entries_to_remove=("${current_versions_in_path[@]:|entries}")
-
-if [[ "${#current_versions_in_path}" -eq 0 ]]; then
-  local index_to_add_at=1
+if [[ -n "$force" ]]; then
+  index_to_add_at=1
 else
-  local index_to_add_at="${path[(ie)${current_versions_in_path[1]}]}"
+  index_to_add_at="${path[(i)$prefix*]}"
 fi
 
-# Keep this after finding the idx because we want to keep the existing index
-# even if we remove all the existing entries.
-path=("${path[@]:|entries_to_remove}")
+if [[ "$index_to_add_at" -gt "${#path}" ]]; then
+  index_to_add_at=1
+fi
 
-# _yavm_debug "Entries to remove: $entries_to_remove"
-# _yavm_debug "Entries to add: $entries_to_add"
+# Remove all of the current versions to make sure that everything ends up in
+# the path in the correct order. Also, assign to a different variable because
+# $path checks for duplicates. Assigning to a different variable skips that.
+path_tmp=(${path:#${prefix}*})
 
-# Add new entries at the same position
-local entry
-for entry in ${(Oa)entries_to_add}; do
-  path=(${path[1, $index_to_add_at - 1]} "$entry" ${path[$index_to_add_at, -1]})
-done
+# Add new entries at the same position. Note that we reverse the '$entries'
+# array to make sure everything is added in the correct order.
+path=(${path_tmp[1, $index_to_add_at - 1]} ${@} ${path_tmp[$index_to_add_at, -1]})

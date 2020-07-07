@@ -1,0 +1,19 @@
+#!/usr/bin/env zsh
+
+local version="$1"
+local install_path="$2"
+
+local tar_file="$(mktemp -d)/node.tar.gz"
+
+safe_run rm -rf "${install_path}" || return 1
+echo_run mkdir -p "${install_path}"
+echo_run curl 'https://nodejs.org/dist/v12.18.2/node-v12.18.2-darwin-x64.tar.gz' -o "$tar_file"
+echo_run tar xvf "$tar_file" -C "$install_path" --strip-components 1
+echo_run ls -la "$install_path"
+
+(
+cd "$install_path"
+echo_run ./configure --prefix="$install_path"
+echo_run make
+echo_run make install
+)

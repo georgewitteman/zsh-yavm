@@ -2,13 +2,18 @@
 
 _yavm_get_versions
 
-local command
-for command in ${(k)_yavm_versions}; do
-  local enabled_var="YAVM_${command:u}_ENABLED"
-  if [[ -n "${(P)enabled_var}" ]]; then
-    _yavm_set_path_"${command}" "$@"
-  # else
-  #   _yavm_debug "Skipping $command."
+local force="$1" command_name command_versions prefix_var_name suffix_var_name
+
+for command_name command_versions in ${(kv)_yavm_versions}; do
+  prefix_var_name="YAVM_PREFIX_${(U)command_name}"
+
+  if [[ -n "${(P)prefix_var_name}" ]]; then
+    suffix_var_name="YAVM_SUFFIX_${(U)command_name}"
+
+    _yavm_add_entries_to_path_with_prefix \
+      "${(P)prefix_var_name}" \
+      "$force" \
+      ${(P)prefix_var_name}${^${(s: :)command_versions}}${^${(s: :)${(P)suffix_var_name}:-/bin}}
   fi
 done
 

@@ -1,5 +1,4 @@
 #!/usr/bin/env zsh
 
-# autoload -Uz colors && colors
 echo -n "[YAVM WARNING] " >&2
 echo "$@" >&2

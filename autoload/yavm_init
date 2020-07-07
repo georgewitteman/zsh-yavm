@@ -2,4 +2,24 @@
 
 # _yavm_debug "Initialising yavm."
 
+if [[ -z "$YAVM_FILES" ]]; then
+  YAVM_FILES=""
+  YAVM_FILES+=".python-version:python:newline"
+  YAVM_FILES+=":.tool-versions:ANY:spaces"
+fi
+
+if [[ -z "$YAVM_DEFAULT_FILES" ]]; then
+  YAVM_DEFAULT_FILES=""
+  YAVM_DEFAULT_FILES+="$HOME/.pyenv/version:python:newline"
+fi
+
+if [[ -z "$YAVM_VERSION_VARIABLES" ]]; then
+  YAVM_VERSION_VARIABLES=""
+  YAVM_VERSION_VARIABLES+="PYENV_VERSION:python"
+fi
+
+_yavm_files_to_search=("${(s.:.)YAVM_FILES}")
+_yavm_default_files=("${(s.:.)YAVM_DEFAULT_FILES}")
+_yavm_version_variables=("${(s.:.)YAVM_VERSION_VARIABLES}")
+
 yavm_set_path --force
