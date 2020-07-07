@@ -1,0 +1,9 @@
+#!/usr/bin/env zsh
+
+# Usage: _yavm_item_in_array ITEM_TO_SEARCH ARRAY_ITEM...
+
+local item="$1"
+shift
+if [[ ${@[(ie)$item]} -gt $# ]]; then
+  return 1
+fi

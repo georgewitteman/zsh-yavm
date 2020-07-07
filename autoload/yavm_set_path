@@ -1,0 +1,9 @@
+#!/usr/bin/env zsh
+
+_yavm_get_versions
+
+local command
+for command in ${(k)_yavm_versions}; do
+  local disabled_var="YAVM_${command:u}_DISABLED"
+  [[ -z "${(P)disabled_var}" ]] && _yavm_set_path_"${command}" "$@"
+done

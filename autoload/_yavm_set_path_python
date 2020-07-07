@@ -1,0 +1,18 @@
+#!/usr/bin/env zsh
+
+local version entries_to_add=()
+for version in ${(s: :)_yavm_versions[python]}; do
+  if [[ -d "$PYENV_ROOT/versions/$version/bin" ]]; then
+    entries_to_add+=("$PYENV_ROOT/versions/$version/bin")
+  fi
+done
+
+# Remove existing versions
+path=(${path:#$PYENV_ROOT/shims})
+
+if _yavm_item_in_array '--force' "$@"; then
+  _yavm_debug "clearing python entries from \$path"
+  path=(${path:#$PYENV_ROOT/versions/*})
+fi
+
+_yavm_add_entries_to_path_with_prefix "$PYENV_ROOT/versions" "${entries_to_add[@]}"

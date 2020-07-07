@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+
+echo "Invalid command: $1"
+yavm_help
+
+return 1
