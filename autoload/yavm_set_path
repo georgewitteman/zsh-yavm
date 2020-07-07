@@ -13,7 +13,7 @@ for command_name command_versions in ${(kv)_yavm_versions}; do
     _yavm_add_entries_to_path_with_prefix \
       "${(P)prefix_var_name}" \
       "$force" \
-      ${(P)prefix_var_name}${^${(s: :)command_versions}}${^${(s: :)${(P)suffix_var_name}:-/bin}}
+      ${(P)prefix_var_name}${^${(s: :)command_versions}}${^${(s: :)${(P)suffix_var_name}:-/bin}}(-/N)
   fi
 done
 

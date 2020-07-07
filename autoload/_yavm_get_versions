@@ -7,7 +7,7 @@ local file_name variable_name command_name separator split_line command
 
 # First priority is environment variables. Something set as an environment
 # variable is higher priority than a file.
-for variable_name command_name in ${_yavm_version_variables}; do
+for command_name variable_name in ${yavm_version_variables}; do
   if [[ -z "${_yavm_versions[$command_name]}" && -n "${(P)variable_name}" ]]; then
     _yavm_versions[$command_name]="${(P)variable_name}"
   fi
@@ -15,7 +15,7 @@ done
 
 local file_directory="$PWD"
 while true; do
-  for file_name command_name separator in ${_yavm_files_to_search}; do
+  for command_name file_name in ${yavm_version_files}; do
     if [[ -f "$file_directory/$file_name" ]]; then
 
       if [[ "$command_name" = "ANY" ]]; then
@@ -27,11 +27,7 @@ while true; do
         done
 
       elif [[ -z "${_yavm_versions[$command_name]}" ]]; then
-        if [[ "$separator" = "newline" ]]; then
-          _yavm_versions[$command_name]="${(j: :)${(f)$(<$file_directory/$file_name)}}"
-        else
-          _yavm_versions[$command_name]="$(<$file_directory/$file_name)"
-        fi
+        _yavm_versions[$command_name]="${(j: :)${(f)$(<$file_directory/file_name)}}"
       fi
 
     fi
@@ -50,12 +46,8 @@ done
 # need to set global versions explicitly if the file uses the normal search
 # name and would have been already found. For example, the asdf global version
 # file is named the same and is in the user's home directory.
-for file_name command_name separator in ${_yavm_default_files}; do
+for command_name file_name in ${yavm_default_version_files}; do
   if [[ -z "${_yavm_versions[$command_name]}" && -f "${file_name}" ]]; then
-    if [[ "${separator}" = "newline" ]]; then
-      _yavm_versions[$command_name]="${(j: :)${(f)$(<$file_name)}}"
-    else
-      _yavm_versions[$command_name]="$(<$file_name)"
-    fi
+    _yavm_versions[$command_name]="${(j: :)${(f)$(<$file_name)}}"
   fi
 done
