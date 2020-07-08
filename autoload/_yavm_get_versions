@@ -6,8 +6,10 @@ local file_name variable_name command_name separator split_line command search_d
 # First priority is environment variables. Something set as an environment
 # variable is higher priority than a file.
 for variable_name command_name in ${(kv)yavm_version_variables}; do
+  # echo "variable_name: $variable_name. command_name: $command_name"
   if [[ -z "${_yavm_versions[$command_name]}" && -n "${(P)variable_name}" ]]; then
     _yavm_versions[$command_name]="${(P)variable_name}"
+    # echo "version found in var: $command_name -> ${(P)variable_name}"
   fi
 done
 
@@ -16,18 +18,21 @@ done
 # in a subdirectory of $HOME.
 while true; do
   for file_name command_name in ${(kv)yavm_version_files}; do
+    # echo "file_name: $file_name. command_name: $command_name"
     if [[ -f "$search_dir/$file_name" ]]; then
 
       if [[ "$command_name" = "ANY" ]]; then
         for line in "${(f)$(<$search_dir/$file_name)}"; do
           command="${line[(w)1]}"
           if [[ -z "${_yavm_versions[$command]}" ]]; then
+            # echo "version found in file: $command -> ${line[(w)2,-1]}"
             _yavm_versions[$command]="${line[(w)2,-1]}"
           fi
         done
 
       elif [[ -z "${_yavm_versions[$command_name]}" ]]; then
         _yavm_versions[$command_name]="${(j: :)${(f)$(<$search_dir/$file_name)}}"
+        # echo "version found in file: $command_name -> ${_yavm_versions[$command_name]}"
       fi
 
     fi
@@ -49,5 +54,9 @@ done
 for file_name command_name in ${(kv)yavm_default_version_files}; do
   if [[ -z "${_yavm_versions[$command_name]}" && -f "${file_name}" ]]; then
     _yavm_versions[$command_name]="${(j: :)${(f)$(<$file_name)}}"
+    # echo "version found in default file: $command_name -> ${_yavm_versions[$command_name]}"
   fi
 done
+
+# echo "$PWD"
+# echo "${(kv)_yavm_versions}"

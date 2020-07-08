@@ -1,9 +1,17 @@
 #!/usr/bin/env zsh
 
-# echo_assoc_array yavm_version_variables
+# echo "Sourcing:" "$YAVM_PLUGIN_DIR"/"${^@}"/init(.N)
+local plugin_init
+for plugin_init in "$YAVM_PLUGIN_DIR"/"${^@}"/init(.N); do
+  source "$plugin_init"
+done
+# source "$YAVM_PLUGIN_DIR"/"${^@}"/init(.N)
+
+# echo "${(kv)yavm_version_variables}"
 # echo
-# echo_assoc_array yavm_version_files
+# echo "${(kv)yavm_version_files}"
 # echo
-# echo_assoc_array yavm_default_version_files
+# echo "${(kv)yavm_default_version_files}"
+
 
 yavm_set_path --force
