@@ -1,21 +1,9 @@
 #!/usr/bin/env zsh
 
-# _yavm_debug "Initialising yavm."
-
-if [[ "${(t)yavm_version_files}" != "array" ]]; then
-  yavm_version_files=()
-  yavm_version_files+=("python" ".python-version")
-  yavm_version_files+=("ANY" ".tool-versions")
-fi
-
-if [[ "${(t)yavm_default_version_files}" != "array" ]]; then
-  yavm_default_version_files=()
-  yavm_default_version_files+=("python" "$HOME/.pyenv/version")
-fi
-
-if [[ "${(t)yavm_version_variables}" != "array" ]]; then
-  yavm_version_variables=()
-  yavm_version_variables+=("python" "PYENV_VERSION")
-fi
+# echo_assoc_array yavm_version_variables
+# echo
+# echo_assoc_array yavm_version_files
+# echo
+# echo_assoc_array yavm_default_version_files
 
 yavm_set_path --force

@@ -1,3 +1,0 @@
-#!/usr/bin/env zsh
-
-YAVM_NODEJS_BIN_PATHS="bin"

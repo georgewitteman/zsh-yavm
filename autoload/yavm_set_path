@@ -2,23 +2,17 @@
 
 _yavm_get_versions
 
-local force="$1" command_name command_versions prefix_var_name suffix_var_name
+local force="$1" cmd_name cmd_versions prefix suffix
 
-for command_name command_versions in ${(kv)_yavm_versions}; do
-  prefix_var_name="YAVM_PREFIX_${(U)command_name}"
+for cmd_name cmd_versions in ${(kv)_yavm_versions}; do
+  prefix="${(P)${:-YAVM_PREFIX_${(U)cmd_name}}}"
 
-  if [[ -n "${(P)prefix_var_name}" ]]; then
-    suffix_var_name="YAVM_SUFFIX_${(U)command_name}"
+  if [[ -n "$prefix" ]]; then
+    suffix="${(P)${:-YAVM_SUFFIX_${(U)cmd_name}}:-/bin}"
 
     _yavm_add_entries_to_path_with_prefix \
-      "${(P)prefix_var_name}" \
+      "${prefix}" \
       "$force" \
-      ${(P)prefix_var_name}${^${(s: :)command_versions}}${^${(s: :)${(P)suffix_var_name}:-/bin}}(-/N)
+      ${prefix}${^${(s: :)cmd_versions}}${^${(s: :)${suffix}}}(-/N)
   fi
 done
-
-# _yavm_debug "New \$PATH:"
-# local item
-# for item in $path; do
-#   _yavm_debug " - $item"
-# done

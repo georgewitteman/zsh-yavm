@@ -20,4 +20,4 @@ path_tmp=(${path:#${prefix}*})
 
 # Add new entries at the same position. Note that we reverse the '$entries'
 # array to make sure everything is added in the correct order.
-path=(${path_tmp[1, $index_to_add_at - 1]} ${@} ${path_tmp[$index_to_add_at, -1]})
+path=(${path_tmp[1, $index_to_add_at - 1]} ${@:a} ${path_tmp[$index_to_add_at, -1]})

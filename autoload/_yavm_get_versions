@@ -1,25 +1,25 @@
 #!/usr/bin/env zsh
 
 typeset -gA _yavm_versions=()
-local file_name variable_name command_name separator split_line command
-
-# _yavm_debug "Searching for versions starting from '${PWD}'."
+local file_name variable_name command_name separator split_line command search_dir="$PWD"
 
 # First priority is environment variables. Something set as an environment
 # variable is higher priority than a file.
-for command_name variable_name in ${yavm_version_variables}; do
+for variable_name command_name in ${(kv)yavm_version_variables}; do
   if [[ -z "${_yavm_versions[$command_name]}" && -n "${(P)variable_name}" ]]; then
     _yavm_versions[$command_name]="${(P)variable_name}"
   fi
 done
 
-local file_directory="$PWD"
+# Next, lets look for version files up the directory tree until we get to $HOME
+# or root. We check for both so we don't get into an infinite loop if we're not
+# in a subdirectory of $HOME.
 while true; do
-  for command_name file_name in ${yavm_version_files}; do
-    if [[ -f "$file_directory/$file_name" ]]; then
+  for file_name command_name in ${(kv)yavm_version_files}; do
+    if [[ -f "$search_dir/$file_name" ]]; then
 
       if [[ "$command_name" = "ANY" ]]; then
-        for line in "${(f)$(<$file_directory/$file_name)}"; do
+        for line in "${(f)$(<$search_dir/$file_name)}"; do
           command="${line[(w)1]}"
           if [[ -z "${_yavm_versions[$command]}" ]]; then
             _yavm_versions[$command]="${line[(w)2,-1]}"
@@ -27,17 +27,17 @@ while true; do
         done
 
       elif [[ -z "${_yavm_versions[$command_name]}" ]]; then
-        _yavm_versions[$command_name]="${(j: :)${(f)$(<$file_directory/file_name)}}"
+        _yavm_versions[$command_name]="${(j: :)${(f)$(<$search_dir/$file_name)}}"
       fi
 
     fi
   done
 
-  if [[ "$file_directory" = "/" || "$file_directory" = "$HOME" ]]; then
+  if [[ "$search_dir" = "/" || "$search_dir" = "$HOME" ]]; then
     break
   fi
 
-  file_directory="${file_directory:a:h}"
+  search_dir="${search_dir:a:h}"
 done
 
 
@@ -46,7 +46,7 @@ done
 # need to set global versions explicitly if the file uses the normal search
 # name and would have been already found. For example, the asdf global version
 # file is named the same and is in the user's home directory.
-for command_name file_name in ${yavm_default_version_files}; do
+for file_name command_name in ${(kv)yavm_default_version_files}; do
   if [[ -z "${_yavm_versions[$command_name]}" && -f "${file_name}" ]]; then
     _yavm_versions[$command_name]="${(j: :)${(f)$(<$file_name)}}"
   fi
