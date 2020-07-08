@@ -7,5 +7,5 @@ YAVM_INSTALL_DIR="${YAVM_INSTALL_DIR:-${XDG_DATA_HOME:-$HOME/.local/share}/yavm/
 fpath+=("${0:a:h}/autoload/")
 autoload -Uz "${0:a:h}"/autoload/*
 
-# preexec_functions+=(yavm_set_path)
-precwd_functions+=(yavm_set_path)
+preexec_functions+=(yavm_set_path)
+# chpwd_functions+=(yavm_set_path)
