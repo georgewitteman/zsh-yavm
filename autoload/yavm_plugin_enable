@@ -1,3 +1,0 @@
-#!/usr/bin/env zsh
-
-source "$YAVM_PLUGIN_DIR/$1/init"
