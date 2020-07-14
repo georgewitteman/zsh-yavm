@@ -3,6 +3,4 @@
 YAVM_PREFIX_GOLANG="${ASDF_DIR:-$HOME/.asdf}/installs/golang/"
 YAVM_SUFFIX_GOLANG="/go/bin"
 
-typeset -gA yavm_version_files
-
 yavm_version_files[.tool-versions]="ANY"

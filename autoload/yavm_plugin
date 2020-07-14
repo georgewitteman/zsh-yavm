@@ -1,0 +1,18 @@
+#!/usr/bin/env zsh
+
+local plugin_name="$1"
+local plugin_cmd="$2"
+
+if [[ -z "$plugin_name" || -z "$plugin_cmd" ]]; then
+  echo "Usage: yavm plugin <plugin name> <plugin cmd> [args]"
+  return 1
+fi
+
+shift 2
+
+if [[ -f "$YAVM_PLUGIN_DIR/$plugin_name/$plugin_cmd" ]]; then
+  source "$YAVM_PLUGIN_DIR/$plugin_name/$plugin_cmd" "$@"
+else
+  echo "The '$plugin_name' plugin doesn't support the '$plugin_cmd' command."
+  return 1
+fi

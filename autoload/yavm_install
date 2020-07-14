@@ -1,11 +1,5 @@
 #!/usr/bin/env zsh
 
 local plugin_name="$1"
-shift
 
-if [[ -f "$YAVM_PLUGIN_DIR/$plugin_name/install" ]]; then
-  source "$YAVM_PLUGIN_DIR/$plugin_name/install" "$@"
-else
-  echo "The $plugin_name plugin doesn't support installation."
-  return 1
-fi
+yavm plugin "$plugin_name" install "${@[2,-1]}"

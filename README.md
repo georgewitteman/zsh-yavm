@@ -2,16 +2,11 @@
 
 Yet Another Version Manager (`yavm`) is a wrapper around existing version managers to speed them up. It only works with zsh and doesn't completely replace your existing version manager. See the "Installation" section below for details about how to get up and running.
 
+Eventually I want to add the capability for plugins to actually handle installing the actual commands, making this a real version manager. See the "Roadmap" section below.
+
 ## Installation
-1. Install the plugin as usual.
-1. Add `yavm init` to your `.zshrc`.
-
-### Environment Variables
-There are three environment variables that you can use to configure `yavm`. All three are zsh arrays (i.e. initialized like `yadm_files=()`)
-
-- `$yavm_version_variables`: This array tells `yavm` what environment variables to look in for versions. Each entry contains the command name and the name of the variable (without the `$`). For example, setting `yavm_version_variables=(python PYENV_VERSION)` will tell `yavm` to look at the `$PYENV_VERSION` environment variable, and if it is non-empty, use that as the version. It has the highest priority.
-- `$yavm_version_files`: This array tells `yavm` what version files to look for. These are files like `.nvmrc`, `.tool-versions`, and `.python-version`. For each file you need to add the command and the filename. The filename is the name of the file that contains the versions (e.g. `.tool-versions`). The command indicates what command this file determines the version for (e.g. python). You can also put `ANY` here to indicate that the file contains versions for multiple commands, like `.tool-versions`. See [here](https://github.com/georgewitteman/zsh-yavm/blob/master/autoload/yavm_init#L5) for an example (and the defaults).
-- `$yavm_default_version_files`: This array determines what files to look at if `yavm` couldn't find a version by environment variables or searching up the directory tree. It uses the same format as `$yavm_version_files`.
+1. Install the plugin using a zsh plugin manager or by cloning the repository and sourcing `zsh-yavm.plugin.zsh`.
+1. Add `yavm init PLUGIN [PLUGIN...]` to your `.zshrc`.
 
 ## What It Is
 Most modern version managers like asdf, pyenv, and nvm are slow. They can add hundreds of milliseconds of time to the shell startup, as well as slowing down individual commands. For example, `python --version` runs in around 20ms when calling the binary directly, but with pyenv it can take over 600ms. This may not sound like much, but when you're running commands many times (e.g. in a loop) or you open new terminal windows often, this can make your computer feel slow and laggy.
@@ -24,5 +19,10 @@ It is able to be so fast because it uses highly optimized native zsh. The code t
 
 ## What It Doesn't Do
 - Work with other shells besides zsh. I don't have any intentions of adding support for other shells, and I'm not even sure that it would work.
-- Manage installing and uninstalling versions. I currently use other version managers (like asdf or pyenv) to actually handle installing and updating the versions. This may be something that I add in the future, probably by enabling the ability to add plugins.
-- Keep your `$PATH` squeaky clean. Depending on how many versions of things that you have, your path may end up a little long. To me, having a fast shell is more important than having a short `$PATH`. `yavm` won't add `$PATH` entries unnecessarily, though. It only adds directories you care about, and it doesn't add directories that don't actually exist.
+- Manage installing and uninstalling versions. I currently use other version managers (like asdf or pyenv) to actually handle installing and updating the versions. This is something that I plan on adding in the future.
+- Keep your `$PATH` squeaky clean. Depending on how many versions of things that you have, your path may end up a little long. To me, having a fast shell is more important than having a short `$PATH`. `yavm` won't add `$PATH` entries unnecessarily, though. It only adds directories for commands you enable, and it doesn't add directories that don't actually exist.
+
+## Roadmap
+1. Support installing versions of python.
+1. Support other languages.
+1. Sometimes an script expects that everyone that uses the script will be using the same version manager. It would be nice if `yavm` could set up a fake executable that would simulate another version manager (e.g. `pyenv`). This would allow `yavm` to be a drop in replacement for other version managers.

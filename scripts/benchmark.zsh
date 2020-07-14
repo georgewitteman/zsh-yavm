@@ -16,7 +16,8 @@ typeset -U fpath
 fpath=()
 path=()
 
-source ../zsh-yavm.plugin.zsh
+source "${0:a:h:h}/zsh-yavm.plugin.zsh"
+# source ../zsh-yavm.plugin.zsh
 preexec_functions=()
 chpwd_functions=()
 
@@ -39,11 +40,11 @@ for i in {1..$runs}; do
 
   # source "${0:A:h}/minimal-setup.zsh"
 
-  source "${0:A:h:h}/zsh-yavm.plugin.zsh"
+  # source "${0:A:h:h}/zsh-yavm.plugin.zsh"
 
   yavm init "${plugins[@]}"
 
-  yavm_set_path
+  # yavm_set_path
 done
 local end_time="$EPOCHREALTIME"
 
