@@ -2,4 +2,22 @@
 
 local plugin_name="$1"
 
-yavm plugin "$plugin_name" install "${@[2,-1]}"
+local prefix="${(P)${:-YAVM_PREFIX_${(U)plugin_name}}}"
+
+if [[ ! -n "$prefix" ]]; then
+  echo "The plugin '${plugin_name}' is not initialized."
+  return 1
+fi
+
+if [[ ! -f "$YAVM_PLUGIN_DIR/$plugin_name/install" ]]; then
+  echo "The '$plugin_name' plugin doesn't support the 'install' command."
+  return 1
+fi
+
+local version
+for version in ${@[2,-1]}; do
+  ( source "$YAVM_PLUGIN_DIR/$plugin_name/install" "$version" ) || {
+    echo "Failed to install '${plugin_name}' version '${version}'."
+    return 1
+  }
+done

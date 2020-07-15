@@ -9,6 +9,7 @@ This file is run on yavm initialization if the plugin is enabled. It shouldn't c
 - `$yavm_version_files`: This associative array has the same basic behavior as `$yavm_version_varibles`, except the keys are the names of files. For example, `yavm_version_files[.python-version]="python"` will look for `.python-version` files and use the contents as the version for the `python` command. If the file you're specifying is similar to the `.tool-versions` file that asdf uses, then set the value (command) to `ANY`. For example, `yavm_version_files[.tool-versions]="ANY"`.
 - `$yavm_default_version_files`: This associative array tells `yavm` what file to use if it couldn't find a version in an environment variable or file in the current directory or any of its parents. The keys are the full path to a file, and the values are the command name or `ANY`. Example: `yavm_default_version_files[$HOME/.pyenv/version]="python"`. Note that if the default file is in the `$HOME` directory you don't need to add it here, since it will be searched by default when traversing the directory tree.
 
+You also need to add a `$YAVM_PREFIX_<COMMAND>` variable and an optional `$YAVM_SUFFIX_<COMMAND>` variable.
 
 ### install
 `TODO`

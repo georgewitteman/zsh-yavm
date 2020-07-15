@@ -8,7 +8,7 @@
 zmodload zsh/datetime
 autoload -U colors && colors
 
-local runs="${1:-5000}"
+local runs="${1:-1000}"
 echo "Runs: $runs"
 
 typeset -U path
@@ -21,14 +21,15 @@ source "${0:a:h:h}/zsh-yavm.plugin.zsh"
 preexec_functions=()
 chpwd_functions=()
 
-local plugins=("${YAVM_PLUGIN_DIR}"/*(/:t))
+# local plugins=("${YAVM_PLUGIN_DIR}"/*(/:t))
+local plugins=(asdf-golang nodejs pyenv)
 
 # Warm caches
 for i in {1..100}; do
   yavm init "${plugins[@]}"
 done
 
-echo "Command: yavm init ${plugins}"
+echo "Plugins: ${plugins}"
 
 local start_time="$EPOCHREALTIME"
 for i in {1..$runs}; do
@@ -40,7 +41,7 @@ for i in {1..$runs}; do
 
   # source "${0:A:h}/minimal-setup.zsh"
 
-  # source "${0:A:h:h}/zsh-yavm.plugin.zsh"
+  source "${0:A:h:h}/zsh-yavm.plugin.zsh"
 
   yavm init "${plugins[@]}"
 

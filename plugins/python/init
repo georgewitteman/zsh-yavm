@@ -1,0 +1,7 @@
+#!/usr/bin/env zsh
+
+YAVM_PREFIX_PYTHON="${YAVM_INSTALL_DIR}/python/"
+
+yavm_version_variables[PYENV_VERSION]="python"
+yavm_version_files[.python-version]="python"
+yavm_default_version_files[$HOME/.pyenv/version]="python"

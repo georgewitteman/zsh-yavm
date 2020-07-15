@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+
+local version="$1"
+
+echo "Installing ${version}."
