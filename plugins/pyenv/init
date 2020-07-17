@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+
+export PYENV_ROOT="${PYENV_ROOT:-${HOME}/.pyenv}"
+path=("$PYENV_ROOT/bin" $path)
+
+YAVM_PREFIX_PYENV="${PYENV_ROOT}/versions/"
+
+yavm_version_variables[PYENV_VERSION]="pyenv"
+yavm_version_files[.python-version]="pyenv"
+yavm_default_version_files[${PYENV_ROOT}/version]="pyenv"
