@@ -2,7 +2,11 @@
 
 _yavm_get_versions
 
-local force="$1" cmd_name cmd_versions prefix suffix
+local force cmd_name cmd_versions prefix suffix
+
+if [[ "$1" = "--force" ]]; then
+  force="--force"
+fi
 
 for cmd_name cmd_versions in ${(kv)_yavm_versions}; do
   prefix="${(P)${:-YAVM_PREFIX_${(U)cmd_name}}}"

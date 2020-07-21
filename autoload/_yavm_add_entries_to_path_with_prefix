@@ -13,6 +13,9 @@ if [[ "$index_to_add_at" -gt "${#path}" ]]; then
   index_to_add_at=1
 fi
 
+# echo "$prefix $index_to_add_at $force"
+# echo "$@"
+
 # Remove all of the current versions to make sure that everything ends up in
 # the path in the correct order. Also, assign to a different variable because
 # $path checks for duplicates. Assigning to a different variable skips that.
