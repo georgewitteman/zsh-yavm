@@ -13,7 +13,7 @@ YAVM_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}/yavm"
 # echo "YAVM_INSTALL_DIR: $YAVM_INSTALL_DIR"
 
 fpath+=("${0:a:h}/autoload")
-autoload -Uz "${0:a:h}"/autoload/*
+autoload -Uz "${0:a:h}"/autoload/*(.)
 
 typeset -gA yavm_version_files
 typeset -gA yavm_version_variables
