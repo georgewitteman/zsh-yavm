@@ -17,3 +17,5 @@ else
 fi
 
 pyenv install "$@"
+
+yavm init pyenv
