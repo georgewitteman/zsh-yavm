@@ -1,11 +1,10 @@
 #!/usr/bin/env zsh
 
-YAVM_PLUGIN_DIR="${0:a:h}/plugins"
-YAVM_CONFIG_DIR="${YAVM_CONFIG_DIR:-${XDG_CONFIG_HOME:-$HOME/.config}/yavm}"
-YAVM_DATA_DIR="${YAVM_DATA_DIR:-${XDG_DATA_HOME:-$HOME/.local/share}/yavm}"
-YAVM_INSTALL_DIR="${YAVM_DATA_DIR}/installs"
-YAVM_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}/yavm"
-
+export YAVM_PLUGIN_DIR="${0:a:h}/plugins"
+export YAVM_CONFIG_DIR="${YAVM_CONFIG_DIR:-${XDG_CONFIG_HOME:-$HOME/.config}/yavm}"
+export YAVM_DATA_DIR="${YAVM_DATA_DIR:-${XDG_DATA_HOME:-$HOME/.local/share}/yavm}"
+export YAVM_INSTALL_DIR="${YAVM_DATA_DIR}/installs"
+export YAVM_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}/yavm"
 
 # echo "YAVM_PLUGIN_DIR: $YAVM_PLUGIN_DIR"
 # echo "YAVM_CONFIG_DIR: $YAVM_CONFIG_DIR"

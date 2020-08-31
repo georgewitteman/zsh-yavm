@@ -2,10 +2,15 @@
 
 local plugin_name="$1"
 
+if [[ -z "$plugin_name" ]]; then
+  echo "You must pass a plugin name."
+  return 1
+fi
+
 local prefix="${(P)${:-YAVM_PREFIX_${(U)plugin_name}}}"
 
-if [[ ! -n "$prefix" ]]; then
-  echo "The plugin '${plugin_name}' is not initialized."
+if [[ -z "$prefix" ]]; then
+  echo "The plugin '${plugin_name}' is not initialized. Do you need to add 'yavm init ${plugin_name}' to your .zshrc?"
   return 1
 fi
 
@@ -14,10 +19,23 @@ if [[ ! -f "$YAVM_PLUGIN_DIR/$plugin_name/install" ]]; then
   return 1
 fi
 
-local version
+local did_install version install_dir
 for version in ${@[2,-1]}; do
-  ( source "$YAVM_PLUGIN_DIR/$plugin_name/install" "$version" ) || {
+  did_install=1
+
+  install_dir="${YAVM_INSTALL_DIR}/golang/${version}"
+  mkdir -p "$install_dir"
+
+  ( "$YAVM_PLUGIN_DIR/$plugin_name/install" "$version" $install_dir ) || {
     echo "Failed to install '${plugin_name}' version '${version}'."
     return 1
   }
+  echo "Successfully installed ${plugin_name} version ${version}."
 done
+
+if [[ -z "$did_install" ]]; then
+  echo "You need to pass a version number."
+  return 1
+fi
+
+yavm init "$plugin_name"

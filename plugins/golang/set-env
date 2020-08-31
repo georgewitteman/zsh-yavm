@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+
+local install_path="$1"
+
+export GOROOT="${install_path}/go"
+export GOPATH="${install_path}/packages"

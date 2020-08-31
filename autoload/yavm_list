@@ -1,0 +1,28 @@
+#!/usr/bin/env zsh
+
+local plugin_name="$1"
+
+if [[ -z "$plugin_name" ]]; then
+  echo "Please pass a plugin name"
+  return 1
+fi
+
+local list_all
+if [[ "$2" = "all" ]]; then
+  list_all=1
+fi
+
+if (( list_all )); then
+  if [[ ! -f "${YAVM_PLUGIN_DIR}/${plugin_name}/list-all" ]]; then
+    echo "The ${plugin_name} plugin doesn't support listing."
+    return 1
+  fi
+
+  "${YAVM_PLUGIN_DIR}/${plugin_name}/list-all"
+  return "$status"
+fi
+
+local install_dir
+for install_dir in ${YAVM_INSTALL_DIR}/${plugin_name}/*; do
+  echo "${install_dir:t}"
+done

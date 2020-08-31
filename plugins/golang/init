@@ -1,0 +1,9 @@
+#!/usr/bin/env zsh
+
+local plugin_name="golang"
+
+YAVM_PREFIX_GOLANG="${YAVM_INSTALL_DIR}/${plugin_name}/"
+YAVM_SUFFIX_GOLANG="/go/bin /packages/bin"
+
+yavm_version_variables[${(U)plugin_name}_VERSION]="$plugin_name"
+yavm_version_files[.tool-versions]="ANY"

@@ -9,14 +9,20 @@ if [[ "$1" = "--force" ]]; then
 fi
 
 for cmd_name cmd_versions in ${(kv)_yavm_versions}; do
+  # echo "$cmd_name" "$cmd_versions"
   prefix="${(P)${:-YAVM_PREFIX_${(U)cmd_name}}}"
 
   if [[ -n "$prefix" ]]; then
     suffix="${(P)${:-YAVM_SUFFIX_${(U)cmd_name}}:-/bin}"
 
-    _yavm_add_entries_to_path_with_prefix \
-      "${prefix}" \
-      "$force" \
+    # echo "$cmd_versions"
+    # echo "${YAVM_INSTALL_DIR}/${cmd_name}/${${(As: :)${cmd_versions}}[1]}"
+
+    _yavm_add_entries_to_path_with_prefix "${prefix}" "$force" \
       ${prefix}${^${(s: :)cmd_versions}}${^${(s: :)${suffix}}}(-/N)
+
+    if [[ -f "${YAVM_PLUGIN_DIR}/${cmd_name}/set-env" ]]; then
+      source "${YAVM_PLUGIN_DIR}/${cmd_name}/set-env" "${YAVM_INSTALL_DIR}/${cmd_name}/${${(As: :)${cmd_versions}}[1]}"
+    fi
   fi
 done

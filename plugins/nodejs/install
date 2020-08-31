@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 
 local version="$1"
-local install_path="${YAVM_INSTALL_DIR}/nodejs/${version}"
+local install_path="$2"
 local binary_tar_dir="${YAVM_CACHE_HOME}/nodejs/binaries/${version}"
 
 [[ -d "$install_path" ]] && rm -rf "$install_path"

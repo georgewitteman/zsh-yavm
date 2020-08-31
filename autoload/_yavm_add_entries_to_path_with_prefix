@@ -3,6 +3,8 @@
 local prefix="$1" force="$2" path_tmp index_to_add_at
 shift 2
 
+# echo "$@"
+
 if [[ -n "$force" ]]; then
   index_to_add_at=1
 else

@@ -3,7 +3,7 @@
 local version="$1"
 local pyenv_path="${YAVM_DATA_DIR}/python/pyenv"
 local pyenv_url="https://github.com/pyenv/pyenv.git"
-local install_path="${YAVM_INSTALL_DIR}/python"
+local install_path="$2"
 
 if [[ -z "$versions" ]]; then
   echo "Usage: yavm install python VERSION [VERSION...]"
@@ -21,4 +21,4 @@ echo "Ensuring python-build is up-to-date..."
 git pull || true
 
 "$pyenv_path"/plugins/python-build/bin/python-build \
-  "$version" "${install_path}/${version}"
+  "$version" "$install_path"
